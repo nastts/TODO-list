@@ -4,8 +4,7 @@ import "github.com/google/uuid"
 
 
 type Task struct{
-	ID uuid.UUID
-	Name string
-	//Description string
-	Progress string
+	ID uuid.UUID `json:"ID"`
+	Name string `json:"name"`
+	Progress string `json:"progress"`
 }

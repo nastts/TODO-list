@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
-	
+
 	"github.com/google/uuid"
 )
 
@@ -23,9 +20,7 @@ func CreateTask(title string) (Task, uuid.UUID){//done
 }
 
 func ShowAllTasks(tasks []Task){//done
-	for _, task := range tasks {
-		fmt.Println(task)
-	}
+	fmt.Println(tasks)
 }
 func ShowAllTasksInProgress(tasks []Task){//done
 	for i, task := range tasks {
@@ -53,17 +48,11 @@ func CompleteTaskByID(tasks []Task, id uuid.UUID){
 	fmt.Println("Task was not found\n")
 }
 
-func UpdateTaskByID(tasks []Task, id uuid.UUID){ //done
+func UpdateTaskByID(tasks []Task, id uuid.UUID, newName string){ //done
 	for i := range tasks{
 		if tasks[i].ID == id{
-			reader := bufio.NewReader(os.Stdin)
-			input, err := reader.ReadString('\n')
-			if err != nil {
-				return
-			}
-			line := strings.TrimSpace(input)
 
-			tasks[i].Name = line
+			tasks[i].Name = newName
 
 			fmt.Printf("the task: %s was updated!!\n", tasks[i].Name)
 			return

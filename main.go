@@ -40,7 +40,13 @@ func main(){
 			fmt.Printf("ID: %v\n", id)
 		
 		case "show":
-			ShowAllTasks(tasks)
+			if action == "done"{
+				ShowAllTasksDone(tasks)
+			}else if action == "in progress"{
+				ShowAllTasksInProgress(tasks)
+			}else{
+				ShowAllTasks(tasks)
+			}
 		
 		case "complete":
 			parsedID, err := checkID(action)
@@ -54,7 +60,13 @@ func main(){
 			if err != nil{
 				return
 			}
-			UpdateTaskByID(tasks, parsedID)
+			readerForUpdate := bufio.NewReader(os.Stdin)
+			newName, err := readerForUpdate.ReadString('\n')
+			if err != nil {
+				return
+			}
+			correctedNewName := strings.TrimSpace(newName)
+			UpdateTaskByID(tasks, parsedID, correctedNewName)
 		
 		case "delete":
 			parsedID, err := checkID(action)
