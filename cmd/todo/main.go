@@ -6,10 +6,13 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"to-do-list/internal/task"
+	"to-do-list/internal/service"
 )
 
 func main(){
-	tasks := []Task{}
+	tasks := []models.Task{}
 	working := true
 	reader := bufio.NewReader(os.Stdin)
 	var action string
@@ -35,29 +38,29 @@ func main(){
 			working = false
 		
 		case "create":
-			task, id := CreateTask(action)
+			task, id := service.CreateTask(action)
 			tasks = append(tasks, task)
 			fmt.Printf("ID: %v\n", id)
 		
 		case "show":
 			switch action {
 			case "done":
-				ShowAllTasksDone(tasks)
+				service.ShowAllTasksDone(tasks)
 			case "in progress":
-				ShowAllTasksInProgress(tasks)
+				service.ShowAllTasksInProgress(tasks)
 			default:
-				ShowAllTasks(tasks)
+				service.ShowAllTasks(tasks)
 			}
 		
 		case "complete":
-			parsedID, err := checkID(action)
+			parsedID, err := service.CheckID(action)
 			if err != nil{
 				return
 			}
-			CompleteTaskByID(tasks, parsedID)
+			service.CompleteTaskByID(tasks, parsedID)
 		
 		case "update":
-			parsedID, err := checkID(action)
+			parsedID, err := service.CheckID(action)
 			if err != nil{
 				return
 			}
@@ -67,14 +70,14 @@ func main(){
 				return
 			}
 			correctedNewName := strings.TrimSpace(newName)
-			UpdateTaskByID(tasks, parsedID, correctedNewName)
+			service.UpdateTaskByID(tasks, parsedID, correctedNewName)
 		
 		case "delete":
-			parsedID, err := checkID(action)
+			parsedID, err := service.CheckID(action)
 			if err != nil{
 				return
 			}
-			DeleteTaskByID(&tasks, parsedID)
+			service.DeleteTaskByID(&tasks, parsedID)
 		default:
 			fmt.Println("The function was not found. Try again")
 		}
