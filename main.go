@@ -40,11 +40,12 @@ func main(){
 			fmt.Printf("ID: %v\n", id)
 		
 		case "show":
-			if action == "done"{
+			switch action {
+			case "done":
 				ShowAllTasksDone(tasks)
-			}else if action == "in progress"{
+			case "in progress":
 				ShowAllTasksInProgress(tasks)
-			}else{
+			default:
 				ShowAllTasks(tasks)
 			}
 		
