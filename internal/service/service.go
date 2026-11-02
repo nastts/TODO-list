@@ -19,7 +19,7 @@ func NewToDoService() *TodoService{
 	}
 }
 
-func (s *TodoService) CreateTask(title string) (models.Task, uuid.UUID){//done
+func (s *TodoService) CreateTask(title string) uuid.UUID{//done
 	var progress string
 	progress = "in progress"
 	id := uuid.New()
@@ -29,12 +29,14 @@ func (s *TodoService) CreateTask(title string) (models.Task, uuid.UUID){//done
 		Name: title,
 		Progress: progress,
 	}
-	return newTask, id
+	s.tasks = append(s.tasks, newTask)
+	return id
 }
 
 func (s *TodoService) ShowAllTasks(){//done
 	fmt.Println(s.tasks)
 }
+
 func ShowAllTasksInProgress(tasks []models.Task){//done
 	for i, task := range tasks {
 		if tasks[i].Progress == "in progress"{
@@ -42,6 +44,7 @@ func ShowAllTasksInProgress(tasks []models.Task){//done
 		}
 	}
 }
+
 func (s *TodoService) ShowAllTasksDone(){//done
 	for i, task := range s.tasks {
 		if s.tasks[i].Progress == "done"{

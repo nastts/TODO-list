@@ -12,10 +12,10 @@ import (
 )
 
 type TodoCLI struct{
-	TodoService service.TodoService
+	TodoService *service.TodoService
 }
 
-func NewTodoCLI(service service.TodoService) *TodoCLI{
+func NewTodoCLI(service *service.TodoService) *TodoCLI{
 	return &TodoCLI{
 		TodoService: service,
 	}
@@ -48,8 +48,7 @@ func (c *TodoCLI) Run(){
 			working = false
 		
 		case "create":
-			task, id := c.TodoService.CreateTask(action)
-			tasks = append(tasks, task)
+			id := c.TodoService.CreateTask(action)
 			fmt.Printf("ID: %v\n", id)
 		
 		case "show":
