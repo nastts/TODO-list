@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"to-do-list/internal/service"
-	"to-do-list/internal/task"
 )
 
 type TodoCLI struct{
@@ -22,7 +21,6 @@ func NewTodoCLI(service *service.TodoService) *TodoCLI{
 }
 
 func (c *TodoCLI) Run(){
-	tasks := []models.Task{}
 	working := true
 	reader := bufio.NewReader(os.Stdin)
 	var action string
@@ -55,8 +53,8 @@ func (c *TodoCLI) Run(){
 			switch action {
 			case "done":
 				c.TodoService.ShowAllTasksDone()
-			case "in progress":
-				service.ShowAllTasksInProgress(tasks)
+			case "in-progress":
+				c.TodoService.ShowAllTasksInProgress()
 			default:
 				c.TodoService.ShowAllTasks()
 			}
@@ -64,19 +62,19 @@ func (c *TodoCLI) Run(){
 		case "complete":
 			parsedID, err := service.CheckID(action)
 			if err != nil{
-				return
+				log.Fatal(err)
 			}
 			c.TodoService.CompleteTaskByID(parsedID)
 		
 		case "update":
 			parsedID, err := service.CheckID(action)
 			if err != nil{
-				return
+				log.Fatal(err)
 			}
 			readerForUpdate := bufio.NewReader(os.Stdin)
 			newName, err := readerForUpdate.ReadString('\n')
 			if err != nil {
-				return
+				log.Fatal(err)
 			}
 			correctedNewName := strings.TrimSpace(newName)
 			c.TodoService.UpdateTaskByID(parsedID, correctedNewName)
@@ -84,7 +82,7 @@ func (c *TodoCLI) Run(){
 		case "delete":
 			parsedID, err := service.CheckID(action)
 			if err != nil{
-				return
+				log.Fatal(err)
 			}
 			c.TodoService.DeleteTaskByID(parsedID)
 		default:

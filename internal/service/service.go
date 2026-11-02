@@ -37,9 +37,9 @@ func (s *TodoService) ShowAllTasks(){//done
 	fmt.Println(s.tasks)
 }
 
-func ShowAllTasksInProgress(tasks []models.Task){//done
-	for i, task := range tasks {
-		if tasks[i].Progress == "in progress"{
+func (s *TodoService) ShowAllTasksInProgress(){//done
+	for i, task := range s.tasks {
+		if s.tasks[i].Progress == "in progress"{
 			fmt.Println(task)
 		}
 	}
