@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/google/uuid"
 
 	"to-do-list/internal/task"
@@ -19,7 +17,7 @@ func NewToDoService() *TodoService{
 	}
 }
 
-func (s *TodoService) CreateTask(title string) uuid.UUID{//done
+func (s *TodoService) CreateTask(title string) models.Task{//done
 	var progress string
 	progress = "in progress"
 	id := uuid.New()
@@ -30,68 +28,59 @@ func (s *TodoService) CreateTask(title string) uuid.UUID{//done
 		Progress: progress,
 	}
 	s.tasks = append(s.tasks, newTask)
-	return id
+	return newTask
 }
 
-func (s *TodoService) ShowAllTasks(){//done
-	fmt.Println(s.tasks)
+func (s *TodoService) ShowAllTasks() []models.Task {//done
+	return s.tasks
 }
 
-func (s *TodoService) ShowAllTasksInProgress(){//done
+func (s *TodoService) ShowAllTasksInProgress() []models.Task {//done
+	var tasksInProgress []models.Task
 	for i, task := range s.tasks {
 		if s.tasks[i].Progress == "in progress"{
-			fmt.Println(task)
+			tasksInProgress = append(tasksInProgress, task)
 		}
 	}
+	return tasksInProgress
 }
 
-func (s *TodoService) ShowAllTasksDone(){//done
+func (s *TodoService) ShowAllTasksDone() []models.Task {//done
+	var tasksDone []models.Task
 	for i, task := range s.tasks {
 		if s.tasks[i].Progress == "done"{
-			fmt.Println(task)
+			tasksDone = append(tasksDone, task)
 		}
 	}
+	return tasksDone
 }
 
-func (s *TodoService) CompleteTaskByID(id uuid.UUID){
+func (s *TodoService) CompleteTaskByID(id uuid.UUID) bool { //done
 	for i := range s.tasks{
 		if s.tasks[i].ID == id{
 			s.tasks[i].Progress = "done"
-			fmt.Printf("the task: %s is done!!\n", s.tasks[i].Name)
-			return
+			return true
 		}
 	}
-	fmt.Println("Task was not found\n")
+	return false
 }
 
-func (s *TodoService) UpdateTaskByID(id uuid.UUID, newName string){ //done
+func (s *TodoService) UpdateTaskByID(id uuid.UUID, newName string) bool{ //done
 	for i := range s.tasks{
 		if s.tasks[i].ID == id{
-
 			s.tasks[i].Name = newName
-
-			fmt.Printf("the task: %s was updated!!\n", s.tasks[i].Name)
-			return
+			return true
 		}
 	}
-	fmt.Println("Task was not found\n")
+	return false
 }
 
-func (s *TodoService) DeleteTaskByID(id uuid.UUID){
+func (s *TodoService) DeleteTaskByID(id uuid.UUID) bool{
 	for i := range s.tasks{
 		if s.tasks[i].ID == id{
 			s.tasks = append(s.tasks[:i], s.tasks[i+1:]...)
-			fmt.Printf("the task was deleted!!\n")
-			return
+			return true
 		}
 	}
-	fmt.Println("Task was not found\n")
-}
-
-func CheckID(id string) (uuid.UUID, error){
-	parsedID, err := uuid.Parse(id)
-	if err != nil{
-		return uuid.Nil, err
-	}
-	return parsedID, nil
+	return false
 }

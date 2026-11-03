@@ -2,10 +2,13 @@ package cli
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/google/uuid"
 
 	"to-do-list/internal/service"
 )
@@ -20,18 +23,38 @@ func NewTodoCLI(service *service.TodoService) *TodoCLI{
 	}
 }
 
+func convertToJSON(data any){
+	jsonData, err := json.Marshal(data)
+	if err != nil{
+		log.Fatal(err)
+	}
+	fmt.Println(string(jsonData))
+}
+
+func readInput() string {
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
+	line := strings.TrimSpace(input)
+	return line
+}
+
+func checkID(id string) (uuid.UUID, error){
+	parsedID, err := uuid.Parse(id)
+	if err != nil{
+		return uuid.Nil, err
+	}
+	return parsedID, nil
+}
+
 func (c *TodoCLI) Run(){
 	working := true
-	reader := bufio.NewReader(os.Stdin)
 	var action string
 
 	for working{
-		input, err := reader.ReadString('\n')
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		line := strings.TrimSpace(input)
+		line := readInput()
 		words := strings.Fields(line)
 		if len(words) == 0 {
 			continue
@@ -46,47 +69,60 @@ func (c *TodoCLI) Run(){
 			working = false
 		
 		case "create":
-			id := c.TodoService.CreateTask(action)
-			fmt.Printf("ID: %v\n", id)
+			task := c.TodoService.CreateTask(action)
+			convertToJSON(task) // TODO: implement only ID, not the whole task
 		
 		case "show":
 			switch action {
 			case "done":
-				c.TodoService.ShowAllTasksDone()
+				tasksDone := c.TodoService.ShowAllTasksDone()
+				convertToJSON(tasksDone)
 			case "in-progress":
-				c.TodoService.ShowAllTasksInProgress()
+				tasksInProgress := c.TodoService.ShowAllTasksInProgress()
+				convertToJSON(tasksInProgress)
 			default:
-				c.TodoService.ShowAllTasks()
+				tasks := c.TodoService.ShowAllTasks()
+				convertToJSON(tasks)
 			}
 		
 		case "complete":
-			parsedID, err := service.CheckID(action)
+			parsedID, err := checkID(action)
 			if err != nil{
 				log.Fatal(err)
 			}
-			c.TodoService.CompleteTaskByID(parsedID)
+			isCompleted := c.TodoService.CompleteTaskByID(parsedID)
+			if isCompleted{
+				fmt.Printf("done!!\n")
+			}else{
+				fmt.Println("not found\n")
+			}
 		
 		case "update":
-			parsedID, err := service.CheckID(action)
+			parsedID, err := checkID(action)
 			if err != nil{
 				log.Fatal(err)
 			}
-			readerForUpdate := bufio.NewReader(os.Stdin)
-			newName, err := readerForUpdate.ReadString('\n')
-			if err != nil {
-				log.Fatal(err)
+			newName := readInput()
+			isUpdated := c.TodoService.UpdateTaskByID(parsedID, newName)
+			if isUpdated{
+				fmt.Printf("updated!!\n")
+			}else{
+				fmt.Println("not found\n")
 			}
-			correctedNewName := strings.TrimSpace(newName)
-			c.TodoService.UpdateTaskByID(parsedID, correctedNewName)
 		
 		case "delete":
-			parsedID, err := service.CheckID(action)
+			parsedID, err := checkID(action)
 			if err != nil{
 				log.Fatal(err)
 			}
-			c.TodoService.DeleteTaskByID(parsedID)
+			isDeleted := c.TodoService.DeleteTaskByID(parsedID)
+			if isDeleted{
+				fmt.Printf("deleted!!\n")
+			}else{
+				fmt.Println("not found\n")
+			}
 		default:
-			fmt.Println("The function was not found. Try again")
+			fmt.Println("The function was not found. Try again\n")
 		}
 	}
 }
