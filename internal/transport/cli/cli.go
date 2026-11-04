@@ -70,7 +70,7 @@ func (c *TodoCLI) Run(){
 		
 		case "create":
 			id := c.TodoService.CreateTask(action)
-			fmt.Printf("ID: %s", id) // TODO: implement only ID, not the whole task
+			fmt.Printf("ID: %s\n", id)
 		
 		case "show":
 			switch action {
