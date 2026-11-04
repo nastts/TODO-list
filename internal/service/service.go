@@ -17,7 +17,7 @@ func NewToDoService() *TodoService{
 	}
 }
 
-func (s *TodoService) CreateTask(title string) models.Task{//done
+func (s *TodoService) CreateTask(title string) uuid.UUID{//done
 	var progress string
 	progress = "in progress"
 	id := uuid.New()
@@ -28,7 +28,7 @@ func (s *TodoService) CreateTask(title string) models.Task{//done
 		Progress: progress,
 	}
 	s.tasks = append(s.tasks, newTask)
-	return newTask
+	return id
 }
 
 func (s *TodoService) ShowAllTasks() []models.Task {//done

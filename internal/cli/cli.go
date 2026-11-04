@@ -69,8 +69,8 @@ func (c *TodoCLI) Run(){
 			working = false
 		
 		case "create":
-			task := c.TodoService.CreateTask(action)
-			convertToJSON(task) // TODO: implement only ID, not the whole task
+			id := c.TodoService.CreateTask(action)
+			fmt.Printf("ID: %s", id) // TODO: implement only ID, not the whole task
 		
 		case "show":
 			switch action {
