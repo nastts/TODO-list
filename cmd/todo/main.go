@@ -2,7 +2,7 @@ package main
 
 import (
 	"to-do-list/internal/service"
-	"to-do-list/internal/cli"
+	"to-do-list/internal/transport/cli"
 )
 
 func main(){
