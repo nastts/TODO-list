@@ -1,4 +1,4 @@
-package http
+package httptransport
 
 import (
 	"to-do-list/internal/task"
@@ -8,45 +8,45 @@ import (
 
 
 type CreateTaskRequest struct{
-	name string
+	Name string `json:"name"`
 }
 
 type CreateTaskResponse struct{
-	ID uuid.UUID
+	ID uuid.UUID `json:"id"`
 }
 
 type ShowAllTasksInProgressRequest struct{
-	inProgress string
+	InProgress string `json:"pogress"`
 }
 
 type ShowAllTasksDoneRequest struct{
-	done string
+	Done string `json:"progress"`
 }
 
 type ShowAllTasksResponse struct{
-	tasks []models.Task
+	Tasks []models.Task `json:"tasks"`
 }
 
 type CompleteTaskRequest struct {
-	ID uuid.UUID
+	ID uuid.UUID `json:"id"`
 }
 
 type CompleteTaskResponse struct {
-	text string
+	Text string `json:"text"`
 }
 
 type UpdateTaskRequest struct {
-	ID uuid.UUID
+	ID uuid.UUID `json:"id"`
 }
 
 type UpdateTaskResponse struct {
-	text string
+	Text string `json:"text"`
 }
 
 type DeleteTaskRequest struct {
-	ID uuid.UUID
+	ID uuid.UUID `json:"id"`
 }
 
 type DeleteTaskResponse struct {
-	text string
+	tasksext string `json:"text"`
 }

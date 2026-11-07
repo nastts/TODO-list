@@ -1,10 +1,10 @@
-package http
+package httptransport
 
 import (
 	"encoding/json"
 	"net/http"
 	"to-do-list/internal/service"
-	models "to-do-list/internal/task"
+	"to-do-list/internal/task"
 )
 
 type TodoHTTP struct{
@@ -27,12 +27,12 @@ func (h *TodoHTTP) CreateTask(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	if createTaskReq.name == ""{
+	if createTaskReq.Name == ""{
 		http.Error(w, "Title is empty", 400)
 		return
 	}
 
-	id := h.TodoService.CreateTask(createTaskReq.name)
+	id := h.TodoService.CreateTask(createTaskReq.Name)
 
 	createTaskResp := CreateTaskResponse{
 		ID: id,
@@ -60,19 +60,23 @@ func (h *TodoHTTP) ShowAllTasks(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	if showAllTasksDoneReq.done == "done" {
+	if showAllTasksDoneReq.Done == "done" {
 		tasks = h.TodoService.ShowAllTasksDone()
-	}else if showAllTasksInProgressReq.inProgress == "in-progress"{
+	}else if showAllTasksInProgressReq.InProgress == "in-progress"{
 		tasks = h.TodoService.ShowAllTasksInProgress()
 	}else{
 		tasks = h.TodoService.ShowAllTasks()
 	}
 
 	showAllTasksResp := ShowAllTasksResponse{
-		tasks: tasks,
+		Tasks: tasks,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(showAllTasksResp)
+}
+
+func (s *Server) Start() error{
+	return s.srv.ListenAndServe()
 }
