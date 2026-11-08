@@ -1,6 +1,8 @@
 package service
 
 import (
+	"log"
+
 	"github.com/google/uuid"
 
 	"to-do-list/internal/task"
@@ -59,9 +61,11 @@ func (s *TodoService) CompleteTaskByID(id uuid.UUID) bool { //done
 	for i := range s.tasks{
 		if s.tasks[i].ID == id{
 			s.tasks[i].Progress = "done"
+			log.Println("service: found")
 			return true
 		}
 	}
+	log.Println("service: not found")
 	return false
 }
 

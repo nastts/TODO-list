@@ -15,14 +15,6 @@ type CreateTaskResponse struct{
 	ID uuid.UUID `json:"id"`
 }
 
-type ShowAllTasksInProgressRequest struct{
-	InProgress string `json:"pogress"`
-}
-
-type ShowAllTasksDoneRequest struct{
-	Done string `json:"progress"`
-}
-
 type ShowAllTasksResponse struct{
 	Tasks []models.Task `json:"tasks"`
 }
@@ -32,15 +24,16 @@ type CompleteTaskRequest struct {
 }
 
 type CompleteTaskResponse struct {
-	Text string `json:"text"`
+	Text bool `json:"text"`
 }
 
 type UpdateTaskRequest struct {
 	ID uuid.UUID `json:"id"`
+	NewTitle string `json:new title`
 }
 
 type UpdateTaskResponse struct {
-	Text string `json:"text"`
+	Text bool `json:"text"`
 }
 
 type DeleteTaskRequest struct {
@@ -48,5 +41,5 @@ type DeleteTaskRequest struct {
 }
 
 type DeleteTaskResponse struct {
-	tasksext string `json:"text"`
+	Text bool `json:"text"`
 }
