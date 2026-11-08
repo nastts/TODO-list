@@ -70,9 +70,11 @@ func (s *TodoService) CompleteTaskByID(id uuid.UUID) bool {
 }
 
 func (s *TodoService) UpdateTaskByID(id uuid.UUID, newName string) bool{
+	log.Printf("%s is a new name", newName)
 	for i := range s.tasks{
 		if s.tasks[i].ID == id{
 			s.tasks[i].Name = newName
+			log.Printf("%s is a new name now", s.tasks[i].Name)
 			return true
 		}
 	}

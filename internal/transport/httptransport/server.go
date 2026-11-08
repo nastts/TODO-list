@@ -58,7 +58,7 @@ func (s *Server) RegisterHandlers() error{
 			http.Error(w, "Method is not allowed", 405)
 			return
 		}
-		transport.ShowAllTasksInProgress(w,r)
+		transport.ShowAllTasksDone(w,r)
 	}))
 
 	s.mux.Handle("/api/tasks/complete", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

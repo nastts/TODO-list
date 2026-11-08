@@ -2,6 +2,7 @@ package httptransport
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"to-do-list/internal/service"
 	"to-do-list/internal/task"
@@ -126,7 +127,8 @@ func (h *TodoHTTP) UpdateTask(w http.ResponseWriter, r *http.Request){
 	if err := decodeBody(w, r, &request); err != nil{
 		return
 	}
-	update := h.TodoService.UpdateTaskByID(request.ID, request.NewName)
+	log.Printf("the name: %s", request.Name)
+	update := h.TodoService.UpdateTaskByID(request.ID, request.Name)
 
 	response = UpdateTaskResponse{
 			Text: update,
