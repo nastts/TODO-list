@@ -19,7 +19,7 @@ func NewToDoService() *TodoService{
 	}
 }
 
-func (s *TodoService) CreateTask(title string) uuid.UUID{//done
+func (s *TodoService) CreateTask(title string) uuid.UUID{
 	var progress string
 	progress = "in progress"
 	id := uuid.New()
@@ -33,11 +33,11 @@ func (s *TodoService) CreateTask(title string) uuid.UUID{//done
 	return id
 }
 
-func (s *TodoService) ShowAllTasks() []models.Task {//done
+func (s *TodoService) ShowAllTasks() []models.Task {
 	return s.tasks
 }
 
-func (s *TodoService) ShowAllTasksInProgress() []models.Task {//done
+func (s *TodoService) ShowAllTasksInProgress() []models.Task {
 	var tasksInProgress []models.Task
 	for i, task := range s.tasks {
 		if s.tasks[i].Progress == "in progress"{
@@ -47,7 +47,7 @@ func (s *TodoService) ShowAllTasksInProgress() []models.Task {//done
 	return tasksInProgress
 }
 
-func (s *TodoService) ShowAllTasksDone() []models.Task {//done
+func (s *TodoService) ShowAllTasksDone() []models.Task {
 	var tasksDone []models.Task
 	for i, task := range s.tasks {
 		if s.tasks[i].Progress == "done"{
@@ -57,7 +57,7 @@ func (s *TodoService) ShowAllTasksDone() []models.Task {//done
 	return tasksDone
 }
 
-func (s *TodoService) CompleteTaskByID(id uuid.UUID) bool { //done
+func (s *TodoService) CompleteTaskByID(id uuid.UUID) bool {
 	for i := range s.tasks{
 		if s.tasks[i].ID == id{
 			s.tasks[i].Progress = "done"
@@ -69,7 +69,7 @@ func (s *TodoService) CompleteTaskByID(id uuid.UUID) bool { //done
 	return false
 }
 
-func (s *TodoService) UpdateTaskByID(id uuid.UUID, newName string) bool{ //done
+func (s *TodoService) UpdateTaskByID(id uuid.UUID, newName string) bool{
 	for i := range s.tasks{
 		if s.tasks[i].ID == id{
 			s.tasks[i].Name = newName

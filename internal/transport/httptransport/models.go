@@ -29,7 +29,7 @@ type CompleteTaskResponse struct {
 
 type UpdateTaskRequest struct {
 	ID uuid.UUID `json:"id"`
-	NewTitle string `json:new title`
+	NewName string `json:new name`
 }
 
 type UpdateTaskResponse struct {

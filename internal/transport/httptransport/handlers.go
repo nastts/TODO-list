@@ -126,7 +126,7 @@ func (h *TodoHTTP) UpdateTask(w http.ResponseWriter, r *http.Request){
 	if err := decodeBody(w, r, &request); err != nil{
 		return
 	}
-	update := h.TodoService.UpdateTaskByID(request.ID, request.NewTitle)
+	update := h.TodoService.UpdateTaskByID(request.ID, request.NewName)
 
 	response = UpdateTaskResponse{
 			Text: update,
