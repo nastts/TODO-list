@@ -24,6 +24,12 @@ func main(){
 
 	log.Printf("server started successfully!! port: :8080")
 	log.Printf("POST /api/task/create")
+	log.Printf("GET /api/tasks")
+	log.Printf("GET /api/tasks/inprogress")
+	log.Printf("GET /api/tasks/done")
+	log.Printf("POST /api/tasks/complete")
+	log.Printf("POST /api/tasks/update")
+	log.Printf("DELETE /api/tasks/delete")
 	if err := server.Start(); !errors.Is(err, http.ErrServerClosed){
 		log.Printf("error start server: %s", err)
 		return
